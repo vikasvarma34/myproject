@@ -13,8 +13,8 @@ import {
   Label,
   SubHeading,
   TrashIcon,
-} from './FormStyles.js'; // Make sure this path is correct
-import { useForm } from './FormFunctions.js'; // Make sure this path is correct
+} from './FormStyles.js';
+import { useForm } from './FormFunctions.js';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const initialState = {
@@ -107,6 +107,7 @@ const FormComponent = () => {
             {form.questions.map((question, qIndex) => (
               <QuestionContainer key={question.questionId} alt={qIndex % 2 !== 0}>
                 <SubHeading question>Question {qIndex + 1}:</SubHeading>
+
                 <Select
                   name="type"
                   value={question.type}
@@ -117,6 +118,15 @@ const FormComponent = () => {
                   <option value="multiple-choice">Multiple Choice</option>
                   <option value="text">Text</option>
                 </Select>
+                <InputRow>
+                  <Label>Parent ID:</Label>
+                  <Input
+                    name="parentId"
+                    placeholder="Parent ID"
+                    value={question.parentId}
+                    onChange={(e) => handleQuestionChange(qIndex, e)}
+                  />
+                </InputRow>
                 <Label>Question Text:</Label>
                 <Input
                   name="questionText"
