@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -21,6 +20,7 @@ export const useForm = (initialState) => {
             type: '',
             isOptional: false,
             options: [],
+            parentId: '',
         };
         setForm((prevForm) => ({
             ...prevForm,
@@ -31,12 +31,16 @@ export const useForm = (initialState) => {
     const handleQuestionChange = (index, e) => {
         const { name, value } = e.target;
         const questions = [...form.questions];
+    
+        // Directly update the specified field within the question object
         questions[index] = { ...questions[index], [name]: value };
+    
         setForm((prevForm) => ({
             ...prevForm,
             questions,
         }));
     };
+    
 
     const handleOptionChange = (questionIndex, optionIndex, e) => {
         const { name, value } = e.target;
@@ -109,8 +113,8 @@ export const useForm = (initialState) => {
             tier: form.tier,
             mandatory: form.mandatory === 'yes',
             questions: form.questions.map(question => ({
-                parentId: null, // Assuming this field is required for your backend logic
                 questionText: question.questionText,
+              //  parentId: question.parentId || '',
                 order: question.order,
                 isOptional: !question.isOptional,
                 type: question.type,
@@ -119,7 +123,8 @@ export const useForm = (initialState) => {
                     text: option.text,
                     jump: option.jump === 'true',
                     jumpTo: option.jumpTo ? parseInt(option.jumpTo) : undefined
-                }))
+                })),
+                ...(question.parentId && { parentId: question.parentId })
             }))
         };
     
